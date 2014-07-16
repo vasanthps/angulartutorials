@@ -2,6 +2,11 @@
 <html>
     <head>
         <title>AngularJS demo</title>
+        <style>
+            .red {
+                border: 1px solid red;
+            }
+        </style>
             <script src="jquery-2.1.1.min.js" type="text/javascript" ></script>
             <script src="angular.js" type="text/javascript"></script>
         <script>
@@ -9,9 +14,41 @@
         mainApp.controller('firstController', function($scope) {
             var user = {};
             user.name = "Karthik";
-            
+            user.list = [ { name: "asdf", email: "asdf@gmail.com" }, 
+                         { name: "ufeh", email: "ufeh@gmail.com" }, 
+                         { name: "cbj wsdi", email: "cbjwsdj@gmail.com" }, 
+                         { name: "ewid", email: "ewid@gmail.com" }, 
+                         { name: "scksn", email: "scks@gmail.com" }, 
+                         { name: "SDJS", email: "AKDD@GMAIL.COM" }, 
+                         { name: "skns", email: "skns@gmail.com" }, 
+                         { name: "knkw", email: "knkw@gmail.com" }, 
+                         { name: "qeqe", email: "qnqe@gmail.com" } ];
             $scope.user = user;
+            $scope.isValidName = function() {
+                return user.name === "";
+            };
             
+            $scope.selectedElement = function(index) {
+                alert(index);
+            };
+        });
+        mainApp.directive('myTable', function() {
+            return {
+                restrict: 'EA',
+                replace: false,
+                template: '<div ng-repeat="u in user.list | filter: user.name"><label>{{ u.name.toUpperCase() }}</label><label>{{ u.email }}</label><button ng-click="selectedElement(u.name)">Select</button></div>',
+                link: function(scope, elem, attrs) {
+                    elem.bind('mouseenter', function() {
+                        console.log("Mouse entered");
+                        elem.addClass("red");
+                    });
+                    
+                    elem.bind('mouseleave', function() {
+                        console.log("Mouse left");
+                        elem.removeClass("red");
+                    });
+                }
+            };
         });
         </script>
     </head>
@@ -19,8 +56,9 @@
         <div ng-controller="firstController">
             <div>
                 <input type="text" ng-model="user.name" />
-                <label>{{ user.name }}</label>
+                <label>{{  user.name }}</label>
             </div>
+            <div my-table></div>
         </div>
     </body>
 </html>
