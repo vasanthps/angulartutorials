@@ -6,6 +6,10 @@
             .red {
                 border: 1px solid red;
             }
+            
+            .ng-invalid {
+                background-color: red;
+            }
         </style>
             <script src="jquery-2.1.1.min.js" type="text/javascript" ></script>
             <script src="angular.js" type="text/javascript"></script>
@@ -50,15 +54,44 @@
                 }
             };
         });
+            
+        mainApp.directive('myNameCheck', function() {
+            return {
+               require: 'ngModel',
+               link: function(scope, elem, attrs, ngModel) {
+                   ngModel.$parsers.unshift(checkvalid);
+                   ngModel.$formatters.unshift(doSomething);
+                   
+                   function checkvalid(value) {
+                       if(value.indexOf('@') === -1) {
+                            value += '@gmail.com';
+                        }
+                          
+                          return value;
+                   }
+                   
+                   function doSomething(value) {
+                       if(value.indexOf('@') === -1) {
+                            value += '@gmail.com';
+                        }
+                          
+                          return value;
+                   }
+               }
+                
+            };
+        });
         </script>
     </head>
     <body ng-app="demoApp">
         <div ng-controller="firstController">
             <div>
-                <input type="text" ng-model="user.name" />
+                <input name="emailcontrol" type="text" ng-model="user.name" my-name-check />
                 <label>{{  user.name }}</label>
+                <label ng-hide="emailcontrol.$invalid">Enter a valid email</label>
             </div>
-            <div my-table></div>
+            <div my-table>
+            </div>
         </div>
     </body>
 </html>
