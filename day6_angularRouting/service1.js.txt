@@ -1,0 +1,13 @@
+var controllers = angular.module("controllers");
+
+controllers.service("service1", function(){
+	var sharedVariable = 0;
+	
+	this.getVar = function(){
+		return sharedVariable;
+	}
+	
+	this.setVar = function(value){
+		sharedVariable = value;
+	}
+});
